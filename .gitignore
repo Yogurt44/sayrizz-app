@@ -131,3 +131,20 @@ dist
 
 # Replit debugger
 .breakpoints
+
+# Capacitor native platform builds
+android/
+ios/
+
+# Capacitor web assets (output builds)
+www/
+
+# App build artifacts
+dist/
+build/
+
+# Replit uploads
+uploads/
+
+# MacOS junk
+.DS_Store
