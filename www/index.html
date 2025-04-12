@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SayRizz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Rubik', sans-serif;
+      background: #ffffff;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 0.5rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .section {
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 1rem 0;
+    }
+
+    button, input, textarea, select {
+      padding: 1rem;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      background: #f0f0f0;
+      color: #000;
+      cursor: pointer;
+    }
+
+    button.selected {
+      background: #d291ff;
+      color: white;
+    }
+
+    textarea {
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    #generateBtn {
+      background: linear-gradient(to right, #ff5ec4, #ab68ff);
+      color: #fff;
+      font-weight: bold;
+      box-shadow: 0 0 10px #ff5ec4;
+      width: 100%;
+    }
+
+    .response-card {
+      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background: #fafafa;
+    }
+
+    .response-container {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .response-text {
+      padding: 1rem;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid #ddd;
+      position: relative;
+    }
+
+    .response-actions {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 10px;
+    }
+
+    .emoji-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    .emoji-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .emoji-btn:active {
+      transform: scale(0.95);
+      outline: none;
+    }
+
+    #regenerateBtn {
+      margin-top: 1rem;
+      padding: 0.7rem 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to right, #ff5ec4, #ab68ff);
+      color: white;
+      cursor: pointer;
+    }
+
+    #loadingBarContainer {
+      width: 100%;
+      height: 6px;
+      background: #eee;
+      margin-top: 1rem;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    #loadingBar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(to right, #ff5ec4, #ab68ff);
+      transition: width 1s ease;
+    }
+  </style>
+</head>
+<body>
+  <h1>SayRizz</h1>
+  <div id="screen1" class="section">
+    <p>Say less. SayRizz. 💬</p>
+    <div><strong>I'm a:</strong></div>
+    <div class="button-group" id="genderButtons">
+      <button data-value="female" onclick="selectOption('gender', this)">Girl 👧</button>
+      <button data-value="male" onclick="selectOption('gender', this)">Guy 👦</button>
+    </div>
+
+    <div><strong>Interested in:</strong></div>
+    <div class="button-group" id="interestButtons">
+      <button data-value="female" onclick="selectOption('interest', this)">Girls 💅</button>
+      <button data-value="male" onclick="selectOption('interest', this)">Guys 💪</button>
+    </div>
+
+    <button onclick="goToScreen2()">Next ➡️</button>
+  </div>
+
+  <div id="screen2" class="section hidden">
+    <div><strong>Prompt Type:</strong></div>
+    <div class="button-group" id="promptTypeButtons">
+      <button data-value="DM Slide" onclick="selectOption('promptType', this)">DM Slide 📩</button>
+      <button data-value="Story Reply" onclick="selectOption('promptType', this)">Story Reply 👀</button>
+      <button data-value="Flirty Text" onclick="selectOption('promptType', this)">Flirty Text 💕</button>
+      <button data-value="Caption Help" onclick="selectOption('promptType', this)">Caption Help 📝</button>
+      <button data-value="Ghosting Text" onclick="selectOption('promptType', this)">Ghosting Text 👻</button>
+    </div>
+
+    <div><strong>Choose Vibe:</strong></div>
+    <div class="button-group" id="vibeButtons">
+      <button data-value="Sweet 🧁" onclick="selectOption('vibe', this)">Sweet 🧁</button>
+      <button data-value="Savage 💀" onclick="selectOption('vibe', this)">Savage 💀</button>
+      <button data-value="Mysterious 😶‍🌫️" onclick="selectOption('vibe', this)">Mysterious 😶‍🌫️</button>
+      <button data-value="Funny 😭" onclick="selectOption('vibe', this)">Funny 😭</button>
+      <button data-value="Spicy 🌶️" onclick="selectOption('vibe', this)">Spicy 🌶️</button>
+    </div>
+
+    <div id="spiceLevelSelect" class="hidden">
+      <label for="spiceLevel">Select Spice Level 🌶️</label>
+      <select id="spiceLevel">
+        <option value="1">Spice Level 1 🌶️ - Flirty</option>
+        <option value="2">Spice Level 2 🌶️🌶️</option>
+        <option value="3">Spice Level 3 🌶️🌶️🌶️🌶️</option>
+      </select>
+    </div>
+
+    <textarea id="situation" placeholder="What did they say? What's the situation?"></textarea>
+    <input type="file" id="imageUpload" accept="image/*" />
+    <button id="generateBtn">Generate Rizz 🔥</button>
+
+    <div id="loadingBarContainer" class="hidden">
+      <div id="loadingBar"></div>
+    </div>
+
+    <div id="responseOutput" class="response-container"></div>
+    <div id="feedbackMessage" class="response-text hidden"></div>
+    <div id="regenerateContainer" class="hidden">
+      <button id="regenerateBtn">🔁 Regenerate</button>
+    </div>
+  </div>
+
+  <script>
+    let formData = {
+      gender: '',
+      interest: '',
+      promptType: '',
+      vibe: ''
+    };
+
+    function selectOption(type, btn) {
+      const value = btn.dataset.value;
+      formData[type] = value;
+
+      const btnGroup = document.getElementById(type + 'Buttons');
+      if (btnGroup) {
+        Array.from(btnGroup.children).forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      }
+
+      if (type === 'vibe' && value.includes('Spicy')) {
+        document.getElementById('spiceLevelSelect').classList.remove('hidden');
+      } else if (type === 'vibe') {
+        document.getElementById('spiceLevelSelect').classList.add('hidden');
+      }
+    }
+
+    function goToScreen2() {
+      if (formData.gender && formData.interest) {
+        document.getElementById('screen1').classList.add('hidden');
+        document.getElementById('screen2').classList.remove('hidden');
+      } else {
+        alert('Please select gender and who you’re into.');
+      }
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+      document.getElementById('responseOutput').innerHTML = "";
+      document.getElementById('feedbackMessage').classList.add('hidden');
+      document.getElementById('regenerateContainer').classList.add('hidden');
+
+      const situation = document.getElementById('situation').value;
+      const spiceLevel = document.getElementById('spiceLevel').value;
+      const vibe = formData.vibe.includes('Spicy') ? `Spicy Level ${spiceLevel}` : formData.vibe;
+
+      const prompt = `Generate a ${vibe} response for a ${formData.promptType} situation. I'm a ${formData.gender} into ${formData.interest}. Situation: ${situation}`;
+      const imageFile = document.getElementById('imageUpload').files[0];
+
+      const formDataToSend = new FormData();
+      formDataToSend.append('prompt', prompt);
+      if (imageFile) {
+        formDataToSend.append('image', imageFile);
+      }
+
+      const loadingBar = document.getElementById('loadingBar');
+      const loadingContainer = document.getElementById('loadingBarContainer');
+      loadingBar.style.width = '0%';
+      loadingContainer.classList.remove('hidden');
+
+      let percent = 0;
+      const interval = setInterval(() => {
+        if (percent < 100) {
+          percent += Math.floor(Math.random() * 10);
+          loadingBar.style.width = `${percent}%`;
+        }
+      }, 300);
+
+      try {
+        const res = await fetch("https://ac1258ea-1858-4edb-a80f-88c8c8a73b66-00-2ixydwl6ngum.janeway.replit.dev/api/generate", {
+          method: "POST",
+          body: formDataToSend
+        });
+
+        clearInterval(interval);
+        loadingBar.style.width = '100%';
+        setTimeout(() => loadingContainer.classList.add('hidden'), 300);
+
+        const data = await res.json();
+
+        const output = document.getElementById('responseOutput');
+        output.innerHTML = `
+          <div class="response-text">
+            ${data.result}
+            <div class="response-actions">
+              <button class="emoji-btn" onclick="copyText(this)">📋 Copy</button>
+              <button class="emoji-btn" onclick="handleFeedback('like')">🔥</button>
+              <button class="emoji-btn" onclick="handleFeedback('dislike')">💀</button>
+            </div>
+          </div>
+        `;
+      } catch (error) {
+        console.error("Error:", error);
+        alert("❌ Failed to generate rizz. Try again!");
+      }
+    });
+
+    function copyText(btn) {
+      const text = btn.closest('.response-text').innerText.split('\n')[0];
+      navigator.clipboard.writeText(text);
+      alert("Copied!");
+    }
+
+    function handleFeedback(type) {
+      const feedback = document.getElementById("feedbackMessage");
+      const regenBox = document.getElementById("regenerateContainer");
+
+      if (type === "like") {
+        feedback.textContent = "🔥 Glad you liked the rizz!";
+        feedback.classList.remove("hidden");
+        regenBox.classList.add("hidden");
+      } else {
+        feedback.innerHTML = "💀 Yeah… that wasn’t very SayRizz of me. Wanna try again?<br><em>Tip: Try describing the situation or what you want to say more clearly.</em>";
+        feedback.classList.remove("hidden");
+        regenBox.classList.remove("hidden");
+      }
+    }
+
+    document.getElementById("regenerateBtn").addEventListener("click", () => {
+      document.getElementById("generateBtn").click();
+    });
+  </script>
+</body>
+</html>

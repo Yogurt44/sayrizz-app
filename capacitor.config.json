@@ -1,0 +1,6 @@
+{
+  "appId": "com.sayrizz.app",
+  "appName": "SayRizz",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
