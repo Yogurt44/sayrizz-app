@@ -52,7 +52,7 @@ app.post('/api/generate', upload.single('image'), async (req, res) => {
       ];
     } else {
       // Regular Generate Rizz
-    
+
     messages = [
       {
         role: "system",
@@ -66,15 +66,15 @@ Rules:
   - Mysterious 😶‍🌫️ = intriguing, short, alluring
   - Funny 😭 = clever, witty, unexpected
 
-- NEVER sound like an AI or say “here's a message you could use.”
+- NEVER sound like an AI or say "here's a message you could use."
 - NEVER explain the line. Just drop the one-liner as if you’re texting it.
 - KEEP IT SHORT. Max 1–2 sentences, under 20 words.
 - NO emojis, unless explicitly asked.
-- NO greetings like “hey,” “hi,” or “hello.”
-- Don’t repeat the prompt or rephrase the situation — just respond in character.
+- NO greetings like "hey," "hi," or "hello."
+- Don't repeat the prompt or rephrase the situation — just respond in character.
 - ALWAYS personalize your response to the user's situation (text or screenshot).
 - Prioritize flirty, smooth, and viral energy, like something that would go viral on TikTok for being confident or funny.
-- Don’t overuse cheesy pickup lines. Use them cleverly or remix them.
+- Don't overuse cheesy pickup lines. Use them cleverly or remix them.
 - Use slang, but keep it natural and current (Gen Z tone).
 - DO NOT use hyphens like "—" or "-" to list things or format. Write like you’re texting, use commas or natural punctuation.
 
@@ -82,6 +82,7 @@ The vibe and tone matter most. Make the person want to reply or blush.
 `
       }
     ];
+    }
 
 
     if (image) {
@@ -115,7 +116,6 @@ The vibe and tone matter most. Make the person want to reply or blush.
     res.status(500).json({ error: "Failed to generate rizz." });
   }
 });
-// ... your /api/generate route ends here ...
 
 app.post('/api/create-checkout-session', async (req, res) => {
   try {
@@ -150,4 +150,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
-
